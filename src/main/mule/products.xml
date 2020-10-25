@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+<flow name="get:\products:pmp-api-config">
+        <until-successful maxRetries="5" doc:name="Until Successful" doc:id="38d1627a-520e-4041-bf1f-fbbf441a49f2" >
+			<db:select doc:name="Select products" doc:id="eafea69e-f974-4b3c-bdef-98c52bac1688" config-ref="Database_Config">
+			<db:sql>SELECT id, name, categoryId, userId, description, price, createdDate FROM products;</db:sql>
+		</db:select>
+		</until-successful>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="74313513-4e73-4de6-86bf-a75b3f7e8ca9">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map {
+  id: $.id,
+  name: $.name,
+  categoryId: $.categoryId,
+  userId: $.userId,
+  description: $.description,
+  price: $.price,
+  createdDate: $.createdDate
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    
+</flow>
+	<flow name="productsFlow" doc:id="1e1f384c-abc6-487f-b58b-e76d7707d80f" >
+		<ee:transform doc:name="Transform Message" doc:id="61e3fc32-217a-4f7c-824c-e0d7d3140d44" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/java
+---
+substring("RAVIteja",0,3)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	
+
+</mule>

@@ -1,0 +1,21 @@
+#%RAML 1.0
+title: pmp-api
+baseUri: https://localhost:8082/api
+version: v1
+mediaType: 
+  - application/json
+
+protocols:
+  - HTTPS
+
+types:
+  product: !include types/product.raml
+
+/products:
+  get:
+    description: Get All Prodcuts
+    responses:
+      200:
+        body:
+          application/json:
+            type: product

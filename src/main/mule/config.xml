@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	
+	
+	<http:listener-config name="pmp-api-httpListenerConfig">
+        <http:listener-connection host="${https.host}" port="${https.port}" protocol="HTTPS">
+			<tls:context >
+				<tls:key-store type="jks" path="keystore.jks" alias="mule" keyPassword="raviteja" password="raviteja" />
+			</tls:context>
+		</http:listener-connection>
+    </http:listener-config>
+    <apikit:config name="pmp-api-config" api="pmp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="f4de3c66-51ff-40d2-91ed-783448e4af94" >
+		<db:my-sql-connection host="pacemp.ctl3vgambyug.us-west-2.rds.amazonaws.com" port="3306" user="admin" password="pace_marketplace" database="pace_mp" />
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="5f066449-441d-4957-a82c-4953e73d4f9b" file="app-properties-${mule.env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="ec182420-1224-462e-a6bc-6706b4f15749" name="mule.env" value="dev" />
+</mule>

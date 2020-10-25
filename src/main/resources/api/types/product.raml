@@ -1,0 +1,35 @@
+#%RAML 1.0 DataType
+type: object
+properties: 
+  id:
+    type: integer
+    required: true
+    description: Number of the product  
+  name: 
+    type: string
+    required: true
+    description: Name of the product 
+  categoryId: 
+    type: integer
+    required: true
+    description: Category of the product
+  userId: 
+    type: integer
+    required: true
+    description: Userid of the product
+  description:
+    type: string
+    required: false
+    description: Details of the product
+  price: 
+    type: number
+    required: true
+    description: Price of the product
+  createdDate: 
+    type: datetime-only
+    required: true
+    description: Listed datetime of the product
+    
+
+example: !include ../examples/product.raml
+  
